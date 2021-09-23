@@ -10,10 +10,13 @@
 
 
 {% block body %}
-    <h1>Start investing </h1>
-    <h2>You are loged in </h2>
+    <button><a href="{{ url_for('add_coin') }}">Click me</a></button>
 
+
+    
+    <h1>{{ name }}</h1>
+    
     {% for price in prices %}
-    <h1>{{ price }}</h1>
+    <h1>{{ price.tag }}</h1>
     {% endfor %}    
 {% endblock %}

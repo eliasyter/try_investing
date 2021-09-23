@@ -24,15 +24,24 @@
                     <li class="navbar__item">
                         <a href="{{ url_for('invest') }}" class="navbar__links" id="invest-page">Invest</a>
                     </li>
-                    <li class="navbar__item">
-                        <a href="{{ url_for('login') }}" class="navbar__links" id="login-page">Login</a>
-                    </li>
-                    <li class="navbar__btn">
-                        <a href="{{ url_for('SignUp') }}" class="button" id="signup">Sign Up</a>
-                    </li>
+                    {% if current_user.is_authenticated %}
+                        <li class="navbar__btn">
+                            <a href="{{ url_for('logout') }}" class="button" id="logout">logout</a>
+                        </li>
+                    {% else %}
+                        <li class="navbar__item">
+                            <a href="{{ url_for('login') }}" class="navbar__links" id="login-page">Login</a>
+                        </li>
+                        <li class="navbar__btn">
+                            <a href="{{ url_for('SignUp') }}" class="button" id="signup">Sign Up</a>
+                        </li>
+                    {% endif %}
                 </ul>
         </div>
     </nav>
+
+
+    
     {% block body %} {% endblock %}
 
     <script src="{{url_for('static', filename='base.js')}}"></script>

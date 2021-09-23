@@ -1,14 +1,15 @@
 import bcrypt
-from flask import Flask, render_template, url_for, request,redirect
+from flask import Flask, render_template, url_for, request,redirect,session
 
 #database imports
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin,login_user,login_manager,logout_user,login_required
+from flask_login import UserMixin,login_user,login_manager,logout_user,login_required,current_user
 
 #login and registrasion imports
 from flask_wtf import FlaskForm
 from flask_wtf.form import FlaskForm
 from flask_wtf.recaptcha import validators
+from sqlalchemy.orm import session
 from wtforms import StringField,PasswordField,SubmitField
 from wtforms.validators import InputRequired,Length,ValidationError
 
@@ -70,10 +71,13 @@ class LoginForm(FlaskForm):
 
 
 
-class Stocks(db.Model):
+class Coin(db.Model):
     id = db.Column(db.Integer,primary_key= True)
-    tag = content = db.Column(db.String(200),nullable=False)
-    amount =db.Column(db.Float)
+    tag = db.Column(db.String(200),nullable=False)
+    amount =db.Column(db.Integer,nullable=False)
+    owner =db.Column(db.String(20))
+    date_created=db.Column(db.DateTime, default=datetime.utcnow)
+
 
     def __repr__(self):
         return 'You have added <crypto %r>'% self.tag
@@ -125,8 +129,34 @@ def logout():
 @app.route('/invest',methods=['GET','POST'])
 @login_required
 def invest():
-    prices=[123,123,123,123,12,3,123,123,1]
-    return render_template('invest.html',prices=prices)
+    name=current_user.username
+
+    prices=Coin.query.filter_by(owner=current_user.username)
+    return render_template('invest.html',prices=prices,name=name)
+
+
+@app.route('/add_coin',methods=['GET','POST'])
+@login_required
+def add_coin():
+
+    if request.method== "POST":
+        form_tag=request.form['tag']
+        form_amount=request.form['amount']
+        print(form_amount,form_tag)
+        new_coin=Coin(tag=str(form_tag),amount=int(form_amount),owner=current_user.username)
+
+        #push to database
+        try:
+            db.session.add(new_coin)
+            db.session.commit()
+            return redirect('/invest')
+        except:
+            return"There was an error"
+    else:
+        return render_template('add_coin.html')
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
