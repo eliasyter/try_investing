@@ -8,6 +8,23 @@
 
 
 {% block body %}
-    <h1>Hello World</h1>
+    <div class="main">
+        <div class="add">
+
+        </div>
+
+
+
+        <!-- all the text in the home section -->
+        <div class="main_content">
+            <div class="main__text">
+                <h1 class="main_heding">Try investing, for <span>Fun</span></h1>
+                <p>no risk no reward, just fun</p>
+                
+            </div>
+            <button class="main__btn"><a href="{{ url_for('SignUp') }}">Sign Up</a></button>
+        </div>
+        
+    </div>
 {% endblock %}
 

@@ -1,0 +1,94 @@
+body{
+    background: #b92b27;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1565C0, #b92b27);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1565C0, #b92b27); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+
+
+.login_box{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    height: 400px;
+    background-color: rgb(17, 17, 17);
+    margin: auto;
+    margin-top: 10%;
+    text-align: center;
+
+    
+}
+
+
+.login_heading h1{
+    padding-top: 10%;
+    color: #fff;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    
+}
+
+.login_heading p{
+    color: #999;
+    margin: 1%;
+}
+
+.username_div{
+    margin: 1%;
+}
+
+.password_div{
+    margin: 1%;
+}
+
+.username {
+    font-size: 120%;
+    background-color: rgb(17, 17, 17) ;
+    color: #fff;
+    text-align: center;
+    border: 2px solid #1565C0;
+    border-radius: 20px;
+
+}
+
+.password{
+    font-size: 120%;
+    background-color: rgb(17, 17, 17) ;
+    text-align: center;
+    color: #fff;
+    border: 2px solid #1565C0;
+    border-radius: 20px;
+
+}
+
+.submit{
+    padding: 10px 20px;
+    color: #fff;
+    background-color: rgb(17, 17, 17) ;
+    text-align: center;
+    border: 2px solid #0eb646;
+    border-radius: 20px;
+}
+
+
+@media screen and (max-width:800px){
+    .login_heading p{
+        margin: 2%;
+        font-size: 70%;
+    }
+
+    .login_box{
+        height: 300px;
+    }
+
+}
+
+
+
+@media screen and (max-width:500px){
+    .login_heading p{
+        margin: 2%;
+        font-size: 60%;
+    }
+
+}

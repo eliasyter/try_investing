@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+    <title>Login</title>
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/Login.css') }}" />
+{% endblock %}
+
+
+
+
+{% block body %}
+    
+    <div class="login_box">
+        <div class="login_heading">
+            <h1>LOGIN</h1>
+            <p>Please enter your username and password!</p>
+        </div>
+        <div class="form">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <div class="username_div">{{ form.username(class="username")}}</div>
+                <div class="password_div">{{ form.password(class="password") }}</div>
+                <div class="submit_div">{{ form.submit(class="submit") }}</div>
+                
+            
+            </form>
+        </div>
+    </div>
+    
+{% endblock %}

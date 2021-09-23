@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/base.css') }}" />
+    <link rel = "icon" href = 
+"https://image.flaticon.com/icons/png/512/2268/2268350.png" 
+        type = "image/x-icon">
     {% block head %} {% endblock %}
 </head>
 <body>
@@ -16,16 +19,16 @@
                 </div>
                 <ul class="navbar__menu">
                     <li class="navbar__item">
-                        <a href="#home" class="navbar__links" id="home-page">home</a>
+                        <a href="{{ url_for('index') }}" class="navbar__links" id="home-page">Home</a>
                     </li>
                     <li class="navbar__item">
-                        <a href="#about" class="navbar__links" id="about-page">about</a>
+                        <a href="{{ url_for('invest') }}" class="navbar__links" id="invest-page">Invest</a>
                     </li>
                     <li class="navbar__item">
-                        <a href="#login" class="navbar__links" id="login-page">login</a>
+                        <a href="{{ url_for('login') }}" class="navbar__links" id="login-page">Login</a>
                     </li>
                     <li class="navbar__btn">
-                        <a href="#signup" class="button" id="signup">Sign Up</a>
+                        <a href="{{ url_for('SignUp') }}" class="button" id="signup">Sign Up</a>
                     </li>
                 </ul>
         </div>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+    <title>Invest</title>
+{% endblock %}
+
+
+
+
+{% block body %}
+    <h1>Start investing </h1>
+    <h2>You are loged in </h2>
+
+    {% for price in prices %}
+    <h1>{{ price }}</h1>
+    {% endfor %}    
+{% endblock %}
