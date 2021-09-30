@@ -214,3 +214,33 @@
 }
 
 
+
+.alert {
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    border-width: 2px;
+    border-style: solid;
+    width: 60%;
+    margin-left: 10%;
+    list-style-type: none;
+  }
+  
+.alert-error {
+    border-color: darkred;
+    background-color: red;
+    color: white;
+  }
+  
+.alert-info {
+    border-color: orange;
+    background-color: yellow;
+    color: black;
+  }
+
+  .alert-success{
+    border-color: rgb(51, 214, 51);
+    background-color: rgb(0, 255, 21);
+    color: black;
+  }

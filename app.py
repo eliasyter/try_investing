@@ -1,5 +1,5 @@
 import bcrypt
-from flask import Flask, render_template, url_for, request,redirect,session
+from flask import Flask, render_template, url_for, request,redirect,session,flash
 
 #database imports
 from flask_sqlalchemy import SQLAlchemy
@@ -18,6 +18,11 @@ from flask_bcrypt import Bcrypt
 
 #datetime for the login form to later say how long you have had the user
 from datetime import datetime
+
+#liberies for web scraping 
+from urllib.request import urlopen as uReq
+import urllib
+from bs4 import BeautifulSoup as soup
 
 app = Flask(__name__)
 #init Sqlalchemy so i can use it later inn the app 
@@ -70,11 +75,18 @@ class LoginForm(FlaskForm):
     
 
 
-
+#id is id og the coin 
+#tag is full name of the coin('bitcoin)
+#short_tag is short name of the coin('BTC')
+#input_amount is the monay first put inn 
+#owner is the user that made it 
+#data_created is the date the data was maid
 class Coin(db.Model):
     id = db.Column(db.Integer,primary_key= True)
     tag = db.Column(db.String(200),nullable=False)
-    amount =db.Column(db.Integer,nullable=False)
+    short_tag=db.Column(db.String(200),nullable=False)
+    amount =db.Column(db.Float,nullable=False)
+    input_amount=db.Column(db.Float,nullable=False)
     owner =db.Column(db.String(20))
     date_created=db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -115,6 +127,7 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password,form.password.data):
                 login_user(user)
+                flash('You were successfully logged in', category='success')
                 return redirect(url_for('invest'))
     return render_template('login.html',form=form)
 
@@ -129,10 +142,41 @@ def logout():
 @app.route('/invest',methods=['GET','POST'])
 @login_required
 def invest():
-    name=current_user.username
+    cu_user=current_user.username
 
-    prices=Coin.query.filter_by(owner=current_user.username)
-    return render_template('invest.html',prices=prices,name=name)
+    #getting all the coins that the loged inn user has made
+    coins=Coin.query.filter_by(owner=current_user.username)
+    values=[]
+    total =0
+    investment=0
+    for data in coins:
+        try:
+                uClient = uReq(f'https://coinmarketcap.com/no/currencies/{data.tag}/')
+                html=uClient.read()
+                uClient.close()
+                page_soup= soup(html, "html.parser")
+                try:
+                    price = page_soup.find_all("div", class_="priceValue")[0].text[2:]
+                    if ',' in price:
+                        price = price.replace(',','')
+                    tall=float(price)
+                    value=tall*data.amount
+                    value=str(round(value,2))
+                    values.append((value,data.short_tag))
+                    total += float(value)
+                    investment+=data.input_amount
+                except IndexError:
+                    flash('Something went wrong out of your controll', category='alert')
+                    return redirect('/')
+            
+
+        except urllib.error.HTTPError as exception:
+            flash('This Coin does not exsist', category='error')
+
+    values.reverse()
+    income = round(total-investment,2)
+    profit =(income>0)
+    return render_template('invest.html',values=values,cu_user=cu_user,total=round(total,2),income=income,profit=profit)
 
 
 @app.route('/add_coin',methods=['GET','POST'])
@@ -140,18 +184,76 @@ def invest():
 def add_coin():
 
     if request.method== "POST":
-        form_tag=request.form['tag']
-        form_amount=request.form['amount']
-        print(form_amount,form_tag)
-        new_coin=Coin(tag=str(form_tag),amount=int(form_amount),owner=current_user.username)
 
-        #push to database
+        #getting amount and the name of the coin
+        form_tag=request.form['tag'].strip()
+        form_amount=float(request.form['amount'])
+
+        # check if the coin already exists
+        exist=False
+        exsisting_tags=[]
+        for data in Coin.query.filter_by(owner=current_user.username):
+            exsisting_tags.append(data.tag)
+        
+        
+
+
+        #getting the URL making it into soup and looking for prise and name of coin 
+        #sending the data to database 
         try:
-            db.session.add(new_coin)
-            db.session.commit()
-            return redirect('/invest')
+            uClient = uReq(f'https://coinmarketcap.com/no/currencies/{form_tag}/')
+            html=uClient.read()
+            uClient.close()
+            page_soup= soup(html, "html.parser")
+            try:
+                price = page_soup.find_all("div", class_="priceValue")[0].text[2:]
+                if ',' in price:
+                    price = price.replace(',','')
+                name =page_soup.find_all("small", class_="nameSymbol")[0].text
+                tall=float(price)
+                amount_of_coin=form_amount/tall
+
+
+                if form_tag in exsisting_tags:
+                    coin_to_update=Coin.query.filter_by(tag=str(form_tag)).first()
+                    coin_to_update.amount+=amount_of_coin
+                    try:
+                        db.session.commit()
+                        return redirect('/invest')
+                    except:
+                        flash('There was an error commiting to datbase', category='alert')
+                        return redirect('/invest')
+                    
+                else: 
+                    #making a new coin
+                    new_coin=Coin(tag=str(form_tag),
+                    amount=float(amount_of_coin),
+                    owner=current_user.username,
+                    short_tag=name,
+                    input_amount=form_amount)
+
+                    #push to database
+                    #this should happen if the coin does not already exist
+                    try:
+                        db.session.add(new_coin)
+                        db.session.commit()
+                        print('success')
+                        return redirect('/invest')
+                    except:
+                        flash('There was an error commiting to datbase', category='alert')
+                        return redirect('/invest')
+            except IndexError:
+                flash('Something went wrong out of your controll', category='alert')
+                return redirect('/invest')
+        
+
         except:
-            return"There was an error"
+            flash('This Coin does not exsist', category='error')
+
+        
+        
+
+        
     else:
         return render_template('add_coin.html')
 

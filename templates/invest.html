@@ -14,9 +14,18 @@
 
 
     
-    <h1>{{ name }}</h1>
+    <h1>{{ cu_user }}</h1>
     
-    {% for price in prices %}
-    <h1>{{ price.tag }}</h1>
-    {% endfor %}    
+
+    {% for value in values %}
+        <h1>{{ value[1] }}: {{ value[0] }}kr</h1>
+    {% endfor %} 
+    <br>
+    <h1>Total: {{ total }}</h1>
+
+    {% if profit%}
+        <h1>Profit: {{ income }}kr</h1>
+    {% else %}
+        <h1>Loss: {{ income }}kr</h1>
+    {% endif %}
 {% endblock %}
