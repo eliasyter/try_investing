@@ -24,6 +24,10 @@ from urllib.request import urlopen as uReq
 import urllib
 from bs4 import BeautifulSoup as soup
 
+#os to find database adress
+import os 
+import re
+
 app = Flask(__name__)
 #init Sqlalchemy so i can use it later inn the app 
 db = SQLAlchemy(app)
@@ -31,7 +35,10 @@ db = SQLAlchemy(app)
 bcrypt= Bcrypt(app)
 #making a sqlite database
 app.config['SECRET_KEY'] = 'Eliaserdaddy'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://ymsscqozdtvhsm:a9e6e2f2e8fd15b0d7da786a585423cf2859d1946ef02e8afdd995101bc4e96f@ec2-44-194-201-94.compute-1.amazonaws.com:5432/ddh44n1qq86kau'
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://ymsscqozdtvhsm:a9e6e2f2e8fd15b0d7da786a585423cf2859d1946ef02e8afdd995101bc4e96f@ec2-44-194-201-94.compute-1.amazonaws.com:5432/ddh44n1qq86kau'
 
 
 login_manager= login_manager.LoginManager()
