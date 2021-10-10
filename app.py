@@ -41,7 +41,7 @@ if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 #'postgresql://ymsscqozdtvhsm:a9e6e2f2e8fd15b0d7da786a585423cf2859d1946ef02e8afdd995101bc4e96f@ec2-44-194-201-94.compute-1.amazonaws.com:5432/ddh44n1qq86kau'
-
+#'postgres://zudmwrlsgxyjzo:6589abe2804af3080fef3cbcd5d2c1f6c74f5da4fb72011fcf09f2236e99cbc7@ec2-18-211-194-36.compute-1.amazonaws.com:5432/dfcvii42kv709q'
 
 
 
@@ -59,7 +59,7 @@ def load_user(user_id):
 class User(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key= True)
     username=db.Column(db.String(20),nullable=False, unique=True)
-    password= db.Column(db.String(60),nullable=False)
+    password= db.Column(db.String(255),nullable=False)
     #date_created does not work 
     # if i have time in a later time i want to add the time tha user was made
 class RegisterForm(FlaskForm):
