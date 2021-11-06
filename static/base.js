@@ -14,3 +14,6 @@ const mobileMenu=()=>{
 
 menu.addEventListener('click',mobileMenu)
 
+function myFunction() {
+    confirm("Press a button!")
+}
