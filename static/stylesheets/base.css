@@ -239,7 +239,7 @@
     color: black;
   }
 
-  .flash-success{
+  .flash .success{
     border-color: rgb(51, 214, 51);
     background-color: rgb(0, 255, 21);
     color: black;

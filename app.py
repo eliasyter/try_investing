@@ -178,7 +178,7 @@ def invest():
                     total += float(value)
                     investment+=data.input_amount
                 except IndexError:
-                    flash('Something went wrong out of your controll', category='alert')
+                    flash('Something went wrong out of your controll', category='error')
                     return redirect('/')
             
 
@@ -233,7 +233,7 @@ def add_coin():
                         db.session.commit()
                         return redirect('/invest')
                     except:
-                        flash('There was an error commiting to datbase', category='alert')
+                        flash('There was an error commiting to datbase', category='error')
                         return redirect('/invest')
                     
                 else: 
