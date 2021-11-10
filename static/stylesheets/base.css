@@ -215,7 +215,7 @@
 
 
 
-.alert {
+.flash {
     padding: 12px;
     border-radius: 5px;
     font-size: 1.2rem;
@@ -227,19 +227,19 @@
     list-style-type: none;
   }
   
-.alert-error {
+.flash-error {
     border-color: darkred;
     background-color: red;
     color: white;
   }
   
-.alert-info {
+.flash-info {
     border-color: orange;
     background-color: yellow;
     color: black;
   }
 
-  .alert-success{
+  .flash-success{
     border-color: rgb(51, 214, 51);
     background-color: rgb(0, 255, 21);
     color: black;

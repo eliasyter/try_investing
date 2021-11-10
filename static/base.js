@@ -14,6 +14,6 @@ const mobileMenu=()=>{
 
 menu.addEventListener('click',mobileMenu)
 
-function myFunction(message) {
-    confirm(message)
-}
+
+
+
