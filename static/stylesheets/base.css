@@ -227,19 +227,19 @@
     list-style-type: none;
   }
   
-.flash-error {
+.error {
     border-color: darkred;
     background-color: red;
     color: white;
   }
   
-.flash-info {
+.info {
     border-color: orange;
     background-color: yellow;
     color: black;
   }
 
-  .flash .success{
+  .success{
     border-color: rgb(51, 214, 51);
     background-color: rgb(0, 255, 21);
     color: black;
