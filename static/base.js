@@ -15,5 +15,13 @@ const mobileMenu=()=>{
 menu.addEventListener('click',mobileMenu)
 
 
+//login flash
+const msg = document.querySelector('.msg')
 
+function onsubmit(e){
+    e.preventDefault()
+    msg.classList.add('error')
+    msg.innerHTML='please enter all fields'
 
+    setTimeout(()=> msg.remove(),3000)
+    }
